@@ -5,6 +5,9 @@ function App() {
   const [list, setList] = useState([]);
   const [editUser, setEditUser] = useState({});
   const [editId, setEditId] = useState(null);
+  const [hobby, setHobby] = useState([]);
+  const [editHobby, seteditHobby] = useState([]);
+
   // const editRef = useRef();
 
   useEffect(() => {
@@ -13,25 +16,45 @@ function App() {
   }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    let { name, value, checked } = e.target;
 
-    if(editId != null)
-    {
+    if (name == "hobby") {
+      let newHobby;
+      if(!editId){
+        newHobby = [...hobby];
+      }
+      else{
+        newHobby = [...editHobby];
+      }
+      if (checked) {
+        newHobby.push(value);
+      } else {
+        newHobby = newHobby.filter((item) => item != value);
+      }
+      if(!editId){
+        setHobby(newHobby);
+      }
+      else{
+        seteditHobby(newHobby);
+      }
+      value = newHobby;
+    }
+
+    if (editId != null) {
       let newUser = { ...editUser, [name]: value };
       setEditUser(newUser);
-    }
-    else
-    {
+    } else {
       let newUser = { ...user, [name]: value };
       setUser(newUser);
     }
-
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const newList = [...list, { ...user, id: Date.now() }];
+    console.log(user);
     setUser({});
+    setHobby([]);
     localStorage.setItem("users", JSON.stringify(newList));
     setList(newList);
   };
@@ -46,22 +69,23 @@ function App() {
     let editUser = list.filter((val) => val.id === id)[0];
     setEditUser(editUser);
     setEditId(id);
+    // console.log(editUser.hobby);
+    
+    seteditHobby(editUser.hobby)
   };
 
-  const handleSave=(id)=>{
-    let newList = list.map((val)=>{
-      if(editId === val.id)
-      {
-        val = editUser
+  const handleSave = (id) => {
+    let newList = list.map((val) => {
+      if (editId === val.id) {
+        val = editUser;
       }
       return val;
-    })
+    });
     setList(newList);
     localStorage.setItem("users", JSON.stringify(newList));
     setEditId(null);
-  }
-
-  console.log(list);
+  };
+  console.log(user);
 
   return (
     <>
@@ -100,15 +124,52 @@ function App() {
                   onChange={handleChange}
                 />
               </div>
-              <div className="mb-3 form-check">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="exampleCheck1"
-                />
-                <label className="form-check-label" htmlFor="exampleCheck1">
-                  Check me out
-                </label>
+              <div className="mb-3">
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="inlineCheckbox1"
+                    defaultValue="option1"
+                    name="hobby"
+                    value="reading"
+                    onChange={handleChange}
+                    checked={hobby.includes("reading") ? true : false}
+                  />
+                  <label className="form-check-label" htmlFor="inlineCheckbox1">
+                    Reading
+                  </label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="inlineCheckbox2"
+                    defaultValue="option2"
+                    name="hobby"
+                    value="swimming"
+                    onChange={handleChange}
+                    checked={hobby.includes("swimming") ? true : false}
+                  />
+                  <label className="form-check-label" htmlFor="inlineCheckbox2">
+                    swimming
+                  </label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="inlineCheckbox3"
+                    defaultValue="option2"
+                    name="hobby"
+                    value="dancing"
+                    onChange={handleChange}
+                    checked={hobby.includes("dancing") ? true : false}
+                  />
+                  <label className="form-check-label" htmlFor="inlineCheckbox2">
+                    Dancing
+                  </label>
+                </div>
               </div>
               <button type="submit" className="btn btn-primary">
                 Submit
@@ -117,7 +178,7 @@ function App() {
           </div>
         </div>
         <div className="row">
-          <div className="col-md-6 mx-auto">
+          <div className="col-md-8 mx-auto">
             <table className="table caption-top mt-3">
               <caption>
                 <h2>Users data</h2>
@@ -127,12 +188,13 @@ function App() {
                   <th scope="col">#</th>
                   <th scope="col">Email</th>
                   <th scope="col">Password</th>
+                  <th scope="col">Hobby</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {list.map((val, idx) => {
-                  const { id, email, password } = val;
+                  const { id, email, password, hobby } = val;
                   return (
                     <tr key={idx}>
                       <th scope="row">{idx + 1}</th>
@@ -165,23 +227,95 @@ function App() {
                         )}
                       </td>
                       <td>
+                        {editId !== val.id ? (
+                          hobby.toLocaleString()
+                        ) : (
+                          <>
+                            <div className="form-check form-check-inline">
+                              <input
+                                className="form-check-input"
+                                type="checkbox"
+                                id="inlineCheckbox1"
+                                defaultValue="option1"
+                                name="hobby"
+                                value="reading"
+                                onChange={handleChange}
+                                checked={
+                                  editHobby.includes("reading") ? true : false
+                                }
+                              />
+                              <label
+                                className="form-check-label"
+                                htmlFor="inlineCheckbox1"
+                              >
+                                Reading
+                              </label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                              <input
+                                className="form-check-input"
+                                type="checkbox"
+                                id="inlineCheckbox2"
+                                defaultValue="option2"
+                                name="hobby"
+                                value="swimming"
+                                onChange={handleChange}
+                                checked={
+                                  editHobby.includes("swimming") ? true : false
+                                }
+                              />
+                              <label
+                                className="form-check-label"
+                                htmlFor="inlineCheckbox2"
+                              >
+                                swimming
+                              </label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                              <input
+                                className="form-check-input"
+                                type="checkbox"
+                                id="inlineCheckbox3"
+                                defaultValue="option2"
+                                name="hobby"
+                                value="dancing"
+                                onChange={handleChange}
+                                checked={
+                                editHobby.includes("dancing") ? true : false
+                                }
+                              />
+                              <label
+                                className="form-check-label"
+                                htmlFor="inlineCheckbox2"
+                              >
+                                Dancing
+                              </label>
+                            </div>
+                          </>
+                        )}
+                      </td>
+                      <td>
                         <button
                           className="btn btn-danger"
                           onClick={() => handleDelete(id)}
                         >
                           Delete
                         </button>{" "}
-                        
-                          { editId === id 
-                          ? <button onClick={()=> handleSave(id)} className="btn btn-success">Save</button>
-                          : 
+                        {editId === id ? (
                           <button
-                          className="btn btn-warning"
-                          onClick={() => handleEdit(id)}
-                        >
-                          Edit
-                        </button>}
-                        
+                            onClick={() => handleSave(id)}
+                            className="btn btn-success"
+                          >
+                            Save
+                          </button>
+                        ) : (
+                          <button
+                            className="btn btn-warning"
+                            onClick={() => handleEdit(id)}
+                          >
+                            Edit
+                          </button>
+                        )}
                       </td>
                     </tr>
                   );
