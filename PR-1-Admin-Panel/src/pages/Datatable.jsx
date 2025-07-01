@@ -1,7 +1,5 @@
-import React from 'react'
 import Aside from '../components/Aside'
 import Header from '../components/Header'
-import '../assets/script'
 import { Link } from 'react-router-dom'
 
 function Datatable({productsData}) {
@@ -45,8 +43,7 @@ function Datatable({productsData}) {
               <div className="card-header">
                 <div className="d-flex align-items-center">
                   <h4 className="card-title">Add Row</h4>
-                  <Link to='/datatable' className="btn btn-primary btn-round ms-auto" >
-                    <i className="fa fa-plus" />
+                  <Link to='/form' className="btn btn-primary btn-round ms-auto" >
                     Add Row
                   </Link>
                 </div>
@@ -67,10 +64,13 @@ function Datatable({productsData}) {
                     </thead>
                     <tfoot>
                       <tr>
-                        <th>Name</th>
-                        <th>Position</th>
-                        <th>Office</th>
-                        <th>Action</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>image</th>
+                        <th>Discription</th>
+                        <th>Godown</th>
+                        <th style={{width: '10%'}}>Action</th>
                       </tr>
                     </tfoot>
                     <tbody>
@@ -81,7 +81,7 @@ function Datatable({productsData}) {
                             <td>{product.price}</td>
                             <td>{product.stock}</td>
                             <td>
-                              <img src={product.image.url} alt={product.image.name} />
+                              <img width={50} src={product.image.url || ''} alt={product.image.name} />
                             </td>
                             <td>{product.discription}</td>
                             <td>{product.godown.join(', ')}</td>
@@ -135,68 +135,7 @@ function Datatable({productsData}) {
       </div>
     </footer>
   </div>
-  {/* Custom template | don't include it in your project! */}
-  <div className="custom-template">
-    <div className="title">Settings</div>
-    <div className="custom-content">
-      <div className="switcher">
-        <div className="switch-block">
-          <h4>Logo Header</h4>
-          <div className="btnSwitch">
-            <button type="button" className="selected changeLogoHeaderColor" data-color="dark" />
-            <button type="button" className="selected changeLogoHeaderColor" data-color="blue" />
-            <button type="button" className="changeLogoHeaderColor" data-color="purple" />
-            <button type="button" className="changeLogoHeaderColor" data-color="light-blue" />
-            <button type="button" className="changeLogoHeaderColor" data-color="green" />
-            <button type="button" className="changeLogoHeaderColor" data-color="orange" />
-            <button type="button" className="changeLogoHeaderColor" data-color="red" />
-            <button type="button" className="changeLogoHeaderColor" data-color="white" />
-            <br />
-            <button type="button" className="changeLogoHeaderColor" data-color="dark2" />
-            <button type="button" className="changeLogoHeaderColor" data-color="blue2" />
-            <button type="button" className="changeLogoHeaderColor" data-color="purple2" />
-            <button type="button" className="changeLogoHeaderColor" data-color="light-blue2" />
-            <button type="button" className="changeLogoHeaderColor" data-color="green2" />
-            <button type="button" className="changeLogoHeaderColor" data-color="orange2" />
-            <button type="button" className="changeLogoHeaderColor" data-color="red2" />
-          </div>
-        </div>
-        <div className="switch-block">
-          <h4>Navbar Header</h4>
-          <div className="btnSwitch">
-            <button type="button" className="changeTopBarColor" data-color="dark" />
-            <button type="button" className="changeTopBarColor" data-color="blue" />
-            <button type="button" className="changeTopBarColor" data-color="purple" />
-            <button type="button" className="changeTopBarColor" data-color="light-blue" />
-            <button type="button" className="changeTopBarColor" data-color="green" />
-            <button type="button" className="changeTopBarColor" data-color="orange" />
-            <button type="button" className="changeTopBarColor" data-color="red" />
-            <button type="button" className="changeTopBarColor" data-color="white" />
-            <br />
-            <button type="button" className="changeTopBarColor" data-color="dark2" />
-            <button type="button" className="selected changeTopBarColor" data-color="blue2" />
-            <button type="button" className="changeTopBarColor" data-color="purple2" />
-            <button type="button" className="changeTopBarColor" data-color="light-blue2" />
-            <button type="button" className="changeTopBarColor" data-color="green2" />
-            <button type="button" className="changeTopBarColor" data-color="orange2" />
-            <button type="button" className="changeTopBarColor" data-color="red2" />
-          </div>
-        </div>
-        <div className="switch-block">
-          <h4>Sidebar</h4>
-          <div className="btnSwitch">
-            <button type="button" className="selected changeSideBarColor" data-color="white" />
-            <button type="button" className="changeSideBarColor" data-color="dark" />
-            <button type="button" className="changeSideBarColor" data-color="dark2" />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div className="custom-toggle">
-      <i className="icon-settings" />
-    </div>
-  </div>
-  {/* End Custom template */}
+  
 </div>
  
     </>

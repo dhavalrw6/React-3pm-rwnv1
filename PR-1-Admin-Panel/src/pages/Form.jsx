@@ -2,7 +2,7 @@ import React from "react";
 import Aside from "../components/Aside";
 import Header from "../components/Header";
 
-function Form({handleChange,product,godown,handleSubmit}) {
+function Form({handleChange,product,godown,handleSubmit,imgRef,error}) {
 
   return (
     <>
@@ -86,6 +86,7 @@ function Form({handleChange,product,godown,handleSubmit}) {
                               name="product_name"
                               placeholder="Enter product name"
                             />
+                            {error.product_name && <span className="text-danger">{error.product_name}</span>}
                           </div>
                           <div className="form-group">
                             <label htmlFor="price">Product Price</label>
@@ -104,6 +105,7 @@ function Form({handleChange,product,godown,handleSubmit}) {
                             <input
                               onChange={handleChange}
                               type="file"
+                              ref={imgRef}
                               className="form-control"
                               id="image"
                               name="image"

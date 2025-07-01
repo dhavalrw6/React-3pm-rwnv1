@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Home from './pages/Home'
 import { Route, Routes } from 'react-router-dom'
 import Form from './pages/Form'
@@ -9,6 +9,8 @@ function App() {
   const [product,setProduct] = useState({});
   const [productsData,setProductsData] = useState([]);
   const [godown,setGodown] = useState([]);
+  const [error,setError] = useState({});
+  const imgRef = useRef();
 
   useEffect(()=>{
     let oldProduct = JSON.parse(localStorage.getItem('products')) || [];
@@ -54,19 +56,39 @@ function App() {
     else{
       setProduct({...product, [name]: value})
     }
-    
   }
 
   console.log(product);
   
+  const validation = () =>{
+    let errors = {};
+
+    if(!product.product_name) errors.product_name = "Product Name is required";
+    if(!product.price) errors.price = "Price is required";
+    if(!product.stock) errors.stock = "Stock is required";
+    if(!product.image) errors.image = "Image is required";
+    if(!product.discription) errors.discription = "Discription is required";
+    if(!product.godown) errors.godown = "Godown is required";
+    
+    setError(errors);
+    console.log(errors);    
+    return Object.keys(errors).length === 0;
+  }
+
   const handleSubmit=(e)=>{
     e.preventDefault();
+
+    if(!validation()) return;
+
     let newProductList = [...productsData,{...product , id:Date.now()}];
     setProductsData(newProductList);
     setProduct({});
     setGodown([]);
-    localStorage.setItem('products',JSON.stringify(newProductList));
+    imgRef.current.value = '';
+    // localStorage.setItem('products',JSON.stringify(newProductList));
   }
+
+
 
   return (
     <>
@@ -77,6 +99,8 @@ function App() {
           godown={godown}  
           product={product}
           handleSubmit={handleSubmit}
+          imgRef={imgRef}
+          error={error}
           />}
         />
         <Route path='/datatable' element={<Datatable productsData={productsData} />} />
